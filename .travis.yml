@@ -10,6 +10,6 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - coverage run
+  - coverage run -m mond_test
 after_success:
   - coveralls
