@@ -27,6 +27,9 @@ def get(path, api_key, params=None):
     :return table: Data table read in, if request was successful and response is
     binary
     :rtype table: :class:`astropy.table.Table`
+
+    Raises
+    ------
     """
     headers = {"api-key":api_key}
 
