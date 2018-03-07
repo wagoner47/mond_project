@@ -4,7 +4,7 @@ import os
 
 
 def get(path, api_key, params=None):
-	"""Make an HTTP request to get the data from path. Note that there are
+    """Make an HTTP request to get the data from path. Note that there are
     several possible returns with different types depending on the data received
     from the URL
 
@@ -27,11 +27,8 @@ def get(path, api_key, params=None):
     :return table: Data table read in, if request was successful and response is
     binary
     :rtype table: :class:`astropy.table.Table`
-
-    Raises
-    ------
     """
-    headers = {"api-key":api_key}
+    headers = {"api_key": api_key}
 
     r = requests(path, params=params, headers=headers)
 

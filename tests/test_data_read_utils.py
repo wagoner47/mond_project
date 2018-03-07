@@ -13,8 +13,9 @@ def test_get_fail():
     the cases when a bad URL or bad API key is given
     """
     # Set up a bad URL and a bad API key
-    test_fail_url = (test_base_url + ".")[:-1]
+    test_fail_url = list(test_base_url)
     test_fail_url[-2] = "s"
+    test_fail_url = "".join(test_fail_url)
     print(test_fail_url)
     test_fail_key = "".join([test_api_key[i:i+2][::-1] for i in range(0,
         len(test_api_key), 2)])
