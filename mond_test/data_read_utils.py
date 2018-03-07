@@ -30,7 +30,7 @@ def get(path, api_key, params=None):
     """
     headers = {"api_key": api_key}
 
-    r = requests(path, params=params, headers=headers)
+    r = requests.get(path, params=params, headers=headers)
 
     r.raise_for_status()
 
