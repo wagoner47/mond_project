@@ -1,6 +1,9 @@
 [run]
 branch = True
+include = mond_test/*
 omit = 
+	*/__init__.py
+	*/_version.py
 
 [report]
 show_missing = True
