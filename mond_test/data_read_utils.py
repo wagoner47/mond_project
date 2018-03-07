@@ -28,7 +28,7 @@ def get(path, api_key, params=None):
     binary
     :rtype table: :class:`astropy.table.Table`
     """
-    headers = {"api_key": api_key}
+    headers = {"api-key": api_key}
 
     r = requests.get(path, params=params, headers=headers)
 

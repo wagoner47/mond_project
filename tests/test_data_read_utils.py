@@ -17,7 +17,6 @@ def test_get_fail():
     test_fail_url = list(test_base_url)
     test_fail_url[-2] = "s"
     test_fail_url = "".join(test_fail_url)
-    print(test_fail_url)
     test_fail_key = "".join([test_api_key[i:i+2][::-1] for i in range(0,
         len(test_api_key), 2)])
     
@@ -30,3 +29,27 @@ def test_get_fail():
     with np.testing.assert_raises_regex(requests.exceptions.HTTPError,
             "403 Client Error: FORBIDDEN for url: " + test_base_url):
         data_read_utils.get(test_base_url, test_fail_key)
+
+
+def test_get_json():
+    """Test getting json page with :function:`mond_test.data_read_utils.get`. In
+    this case, we should successfully get a return dict
+    """
+    r = data_read_utils.get(test_base_url, test_api_key)
+
+    # Check that the results are as expected
+    ## Only key should be 'simulations'
+    np.testing.assert_array_equal(r.keys(), ["simulations"], 
+            "Keys returned from base URL are not as expected")
+    ## Check first simulation meta-data
+    sim0_exp = {"name": "Illustris-1",
+            "num_snapshots": 134,
+            "url": "http://www.illustris-project.org/api/Illustris-1/"}
+    sim0_get = r["simulations"][0]
+    print(sim0_get)
+    for key in sim0_exp.iterkeys():
+        assert key in sim0_get, "Missing key %s in results" %(key)
+    for key, val in sim0_get.iteritems():
+        assert key in sim0_exp, "Extra key %s in results" %(key)
+        print(val, sim0_exp[key])
+        np.testing.assert_string_equal(val, sim0_exp[key])
