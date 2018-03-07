@@ -48,10 +48,8 @@ def test_get_json():
             "num_snapshots": 134,
             "url": "http://www.illustris-project.org/api/Illustris-1/"}
     sim0_get = r["simulations"][0]
-    print(sim0_get)
     for key in sim0_exp.iterkeys():
         assert key in sim0_get, "Missing key %s in results" %(key)
     for key, val in sim0_get.iteritems():
         assert key in sim0_exp, "Extra key %s in results" %(key)
-        print(val, sim0_exp[key])
-        np.testing.assert_string_equal(val, sim0_exp[key])
+        np.testing.assert_string_equal(str(val), str(sim0_exp[key]))
