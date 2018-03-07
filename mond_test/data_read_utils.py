@@ -1,7 +1,6 @@
 from __future__ import (absolute_import, division, print_function,
         unicode_literals)
 import requests
-from astropy.table import Table
 import os
 
 
@@ -26,9 +25,9 @@ def get(path, api_key, params=None):
     :return r.json(): JSON decoded response, if request was successful and 
     response is JSON
     :rtype r.json(): dict
-    :return table: Data table read in, if request was successful and response is
-    binary
-    :rtype table: :class:`astropy.table.Table`
+    :return filename: Filename for stored HDF5 table, if request was successful
+    and response is binary
+    :rtype filename: str
     """
     headers = {"api-key": api_key}
 
@@ -43,10 +42,6 @@ def get(path, api_key, params=None):
         filename = r.headers["content-disposition"].split("filename=")[1]
         with open(filename, "wb") as f:
             f.write(r.content)
-        table = Table.read(filename)
-        os.remove(filename)
-        return table
+        return filename
 
     return r
-
-

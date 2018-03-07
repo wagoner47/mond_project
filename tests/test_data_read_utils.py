@@ -4,11 +4,14 @@ import numpy as np
 import os
 import re
 import requests
+import h5py
 from mond_test import data_read_utils
 
 
 test_api_key = os.getenv("ILL_KEY")
 test_base_url = "http://www.illustris-project.org/api/"
+test_hdf5_url = \
+        "http://www.illustris-project.org/api/Illustris-3/snapshots/135/subhalos/1030/sublink/mpb.hdf5"
 
 
 def test_get_fail():
@@ -53,3 +56,25 @@ def test_get_json():
     for key, val in sim0_get.iteritems():
         assert key in sim0_exp, "Extra key %s in results" %(key)
         np.testing.assert_string_equal(str(val), str(sim0_exp[key]))
+
+
+def test_get_table():
+    """Test getting table from data page with
+    :function:`mond_test.data_read_utils.get`. In this case, we should
+    successfully get a return astropy table
+    """
+    # Get data
+    fname = data_read_utils.get(test_hdf5_url, test_api_key)
+    ## Read in HDF5 data: just get the one field and close again
+    f = h5py.File(fname, "r")
+    snapnum_get = f["SnapNum"][:]
+    f.close()
+
+    # Get something to compare from the table
+    snapnum_exp = list(np.arange(135, 31, -1))
+
+    # Compare length and content of SnapNum
+    np.testing.assert_equal(len(snapnum_get), len(snapnum_exp),
+            "Length of 'SnapNum' not as expected")
+    np.testing.assert_array_equal(snapnum_get, snapnum_exp,
+            "'SnapNum' not as expected")
