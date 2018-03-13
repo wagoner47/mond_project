@@ -28,6 +28,31 @@ def get(path, api_key, params=None):
     :return filename: Filename for stored HDF5 table, if request was successful
     and response is binary
     :rtype filename: str
+
+    Examples
+    --------
+    Getting JSON data from a higher level API page:
+
+    >>> from mond_project import get
+    >>> import os
+    >>> api_key = os.getenv("ILL_KEY")
+    >>> base_url = "http://www.illustris-project.org/api/"
+    >>> r = get(base_url, api_key)
+    >>> r.keys()
+    ['simulations']
+    >>> len(r["simulations"])
+    18
+    >>> r["simulations"][0]
+    {'name': 'Illustris-1',
+     'num_snapshots': 134,
+     'url': 'http://www.illustris-project.org/api.Illustris-1/'}
+
+    Getting the data saved in a file with a specific URL:
+
+    >>> table_url = "http://www.illustris-project.org/api/Illustris-3/snapshots/135/subhalos/1030/sublink/mpb.hdf5"
+    >>> filename = get(table_url, api_key)
+    >>> print(filename)
+    'sublink_mpb_1030.hdf5'
     """
     headers = {"api-key": api_key}
 
@@ -45,3 +70,8 @@ def get(path, api_key, params=None):
         return filename
 
     return r
+
+
+if __name__ == "__main__":
+    import doctest
+    doctest.testmod()

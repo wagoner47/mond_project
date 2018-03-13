@@ -6,12 +6,21 @@
 Welcome to mond_project's documentation!
 ========================================
 
+:Release: |version|
+:Date: |today|
+
+.. module:: mond_project
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    install
 
+
+
+Reference/API
+=============
 
 
 Indices and tables
