@@ -21,6 +21,11 @@ Welcome to mond_project's documentation!
 
 Reference/API
 =============
+.. toctree::
+   :maxdepth: 2
+   
+   mond_test
+   data_utils
 
 
 Indices and tables

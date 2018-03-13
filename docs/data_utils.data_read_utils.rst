@@ -12,7 +12,7 @@ The :mod:`data_read_utils` module is the main interface point for accessing the 
 
 One potential gotcha for using this is that the user must have an environment variable with the API key they will use to `access the data from Illustris`_. To get this key, you must complete the registration through Illustris. The API key environment variable should be named "ILL_KEY", and can be set by adding to the appropriate user profile file for the system or by using the appropriate command line utility. For Linux/Unix based systems, for instance, to set and check the value:
 
-..code-block:: console
+.. code-block:: console
         
         $ export ILL_KEY=insert-your-assigned-api-key
         $ echo $ILL_KEY
