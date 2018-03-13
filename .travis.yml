@@ -9,6 +9,6 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - coverage run -m mond_test.data_read_utils
+  - coverage run -m mond_project.data_utils.data_read_utils
 after_success:
   - coveralls

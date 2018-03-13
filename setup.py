@@ -8,7 +8,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(here, "requirements.txt")) as f:
     required = f.read().splitlines()
 
-version_file = os.path.join(here, "mond_test", "_version.py")
+version_file = os.path.join(here, "mond_project", "_version.py")
 verstrline = open(version_file, "rt").read()
 VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
 mo = re.search(VSRE, verstrline, re.M)
