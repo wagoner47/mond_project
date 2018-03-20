@@ -3,7 +3,8 @@ import re
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 from setuptools.command.develop import develop
-import os
+from setuptools.command.test import test
+import os, sys
 from configobj import ConfigObj
 
 
@@ -23,6 +24,9 @@ if mo:
     print("mond_project version = ", this_version)
 else:
     raise RuntimeError("Unable to find version string in %s" %(version_file))
+
+needs_pytest = {"pytest", "test", "ptr"}.intersection(sys.argv)
+pytest_runner = ["pytest-runner"] if needs_pytest else []
 
 class CustomInstall(install):
     user_options = install.user_options + [(str("api-key="), None, "The Illustris "\
@@ -62,6 +66,22 @@ class CustomDevelop(develop):
             config.write()
         develop.run(self)
 
+class PyTest(test):
+    user_options = test.user_options + [("pytest-args", "a", "Additional "\
+            "arguments to pass to pytest. Note that --cov, --cov-report "\
+            "term-missing, and --doctest-module are passed by default")]
+
+    def initialize_options(self):
+        test.initialize_options(self)
+        self.pytest_args = "--cov-report term-missing --cov --doctest-module"
+
+    def run_tests(self):
+        import shlex
+        import pytest
+        errno = pytest.main(shlex.split(self.pytest_args))
+        sys.exit(errno)
+
+
 setup(
         name="mond_project",
         version=this_version,
@@ -73,4 +93,5 @@ setup(
         tests_require=test_requires,
         test_suite="nose2.collector.collector",
         python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
-        cmdclass={"install":CustomInstall, "develop":CustomDevelop})
+        cmdclass={"install":CustomInstall, "develop":CustomDevelop,
+            "pytest":PyTest})
