@@ -41,21 +41,19 @@ def get(path, params=None):
     >>> import os
     >>> base_url = "http://www.illustris-project.org/api/"
     >>> r = get(base_url)
-    >>> r.keys()
+    >>> list(r)
     ['simulations']
     >>> len(r["simulations"])
     18
     >>> r["simulations"][0]
-    {'name': 'Illustris-1',
-     'num_snapshots': 134,
-     'url': 'http://www.illustris-project.org/api.Illustris-1/'}
+    {'name': 'Illustris-1', 'num_snapshots': 134, 'url': 'http://www.illustris-project.org/api/Illustris-1/'}
 
     Getting the data saved in a file with a specific URL:
 
     >>> table_url = "http://www.illustris-project.org/api/Illustris-3/snapshots/135/subhalos/1030/sublink/mpb.hdf5"
     >>> filename = get(table_url)
     >>> print(filename)
-    'sublink_mpb_1030.hdf5'
+    sublink_mpb_1030.hdf5
     """
     headers = {"api-key": api_key}
 
