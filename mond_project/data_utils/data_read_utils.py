@@ -37,8 +37,7 @@ def get(path, params=None):
     --------
     Getting JSON data from a higher level API page:
 
-    >>> from __future__ import (absolute_import, division, unicode_literals,
-    >>>     print_function)
+    >>> from __future__ import absolute_import, division, unicode_literals, print_function
     >>> from mond_project import get
     >>> import os
     >>> base_url = "http://www.illustris-project.org/api/"
