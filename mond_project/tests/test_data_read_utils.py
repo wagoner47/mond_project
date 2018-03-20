@@ -6,12 +6,8 @@ import re
 import requests
 import h5py
 from mond_test import data_read_utils
-from configobj import ConfigObj
 
 
-config = ConfigObj(os.path.join(os.path.dirname(__file__), "..",
-    "mond_config.ini"))
-test_api_key = config["ILL_KEY"]
 test_base_url = "http://www.illustris-project.org/api/"
 test_hdf5_url = \
         "http://www.illustris-project.org/api/Illustris-3/snapshots/135/subhalos/1030/sublink/mpb.hdf5"
@@ -25,25 +21,18 @@ def test_get_fail():
     test_fail_url = list(test_base_url)
     test_fail_url[-2] = "s"
     test_fail_url = "".join(test_fail_url)
-    test_fail_key = "".join([test_api_key[i:i+2][::-1] for i in range(0,
-        len(test_api_key), 2)])
     
     # Try running with bad URL: should get an HTTPError
     with np.testing.assert_raises_regex(requests.exceptions.HTTPError, 
             "404 Client Error: NOT FOUND for url: " + test_fail_url):
         data_read_utils.get(test_fail_url, test_api_key)
 
-    # Try running with bad API key: should get an HTTPError
-    with np.testing.assert_raises_regex(requests.exceptions.HTTPError,
-            "403 Client Error: FORBIDDEN for url: " + test_base_url):
-        data_read_utils.get(test_base_url, test_fail_key)
-
 
 def test_get_json():
     """Test getting json page with :function:`mond_test.data_read_utils.get`. In
     this case, we should successfully get a return dict
     """
-    r = data_read_utils.get(test_base_url, test_api_key)
+    r = data_read_utils.get(test_base_url)
 
     # Check that the results are as expected
     ## Only key should be 'simulations'
@@ -67,7 +56,7 @@ def test_get_table():
     successfully get a return astropy table
     """
     # Get data
-    fname = data_read_utils.get(test_hdf5_url, test_api_key)
+    fname = data_read_utils.get(test_hdf5_url)
     ## Read in HDF5 data: just get the one field and close again
     f = h5py.File(fname, "r")
     snapnum_get = f["SnapNum"][:]
