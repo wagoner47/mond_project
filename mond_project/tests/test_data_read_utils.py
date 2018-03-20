@@ -6,9 +6,12 @@ import re
 import requests
 import h5py
 from mond_test import data_read_utils
+from configobj import ConfigObj
 
 
-test_api_key = os.getenv("ILL_KEY")
+config = ConfigObj(os.path.join(os.path.dirname(__file__), "..",
+    "mond_config.ini"))
+test_api_key = config["ILL_KEY"]
 test_base_url = "http://www.illustris-project.org/api/"
 test_hdf5_url = \
         "http://www.illustris-project.org/api/Illustris-3/snapshots/135/subhalos/1030/sublink/mpb.hdf5"
