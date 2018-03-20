@@ -67,6 +67,7 @@ setup(
         description="Code for final project on MOND vs LCDM",
         url="https://github.com/wagoner47/mond_project/tree/master",
         packages=find_packages(exclude=["tests", "docs"]),
+        setup_requires=["configobj"],
         install_requires=required,
         python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
         cmdclass={"install":CustomInstall, "develop":CustomDevelop})
