@@ -1,2 +1,2 @@
-nose2[coverage_plugin]>=0.6.5
+pytest
 coverage

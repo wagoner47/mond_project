@@ -68,7 +68,7 @@ setup(
         description="Code for final project on MOND vs LCDM",
         url="https://github.com/wagoner47/mond_project/tree/master",
         packages=find_packages(exclude=["tests", "docs"]),
-        setup_requires=["configobj"],
+        setup_requires=["configobj", "pytest-runner"],
         install_requires=required,
         tests_require=test_requires,
         test_suite="nose2.collector.collector",
