@@ -1,11 +1,12 @@
 from __future__ import (absolute_import, division, print_function,
         unicode_literals)
+from future.utils import iteritems
 import numpy as np
 import os
 import re
 import requests
 import h5py
-from mond_test import data_read_utils
+from mond_project.data_utils import data_read_utils
 
 
 test_base_url = "http://www.illustris-project.org/api/"
@@ -25,7 +26,7 @@ def test_get_fail():
     # Try running with bad URL: should get an HTTPError
     with np.testing.assert_raises_regex(requests.exceptions.HTTPError, 
             "404 Client Error: NOT FOUND for url: " + test_fail_url):
-        data_read_utils.get(test_fail_url, test_api_key)
+        data_read_utils.get(test_fail_url)
 
 
 def test_get_json():
@@ -36,16 +37,16 @@ def test_get_json():
 
     # Check that the results are as expected
     ## Only key should be 'simulations'
-    np.testing.assert_array_equal(r.keys(), ["simulations"], 
+    np.testing.assert_array_equal(list(r), ["simulations"],
             "Keys returned from base URL are not as expected")
     ## Check first simulation meta-data
     sim0_exp = {"name": "Illustris-1",
             "num_snapshots": 134,
             "url": "http://www.illustris-project.org/api/Illustris-1/"}
     sim0_get = r["simulations"][0]
-    for key in sim0_exp.iterkeys():
+    for key in sim0_exp:
         assert key in sim0_get, "Missing key %s in results" %(key)
-    for key, val in sim0_get.iteritems():
+    for (key, val) in iteritems(sim0_get):
         assert key in sim0_exp, "Extra key %s in results" %(key)
         np.testing.assert_string_equal(str(val), str(sim0_exp[key]))
 
