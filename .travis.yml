@@ -9,6 +9,7 @@ os:
   - osx
 before_install:
   - pip install configobj
+  - pip install pytest-cov
 # command to install code
 install:
   - python setup.py install --api-key=$ILL_KEY
