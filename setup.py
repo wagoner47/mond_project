@@ -3,6 +3,7 @@ import re
 from setuptools import setup, find_packages
 from setuptools.command.install import install
 from setuptools.command.develop import develop
+from setuptools.command.test import test as TestCommand
 import os
 from configobj import ConfigObj
 
@@ -11,6 +12,8 @@ here = os.path.abspath(os.path.dirname(__file__))
 
 with open(os.path.join(here, "requirements.txt")) as f:
     required = f.read().splitlines()
+with open(os.path.join(here, "test_requirements.txt")) as f:
+    test_requires = f.read().splitlines()
 
 version_file = os.path.join(here, "mond_project", "_version.py")
 verstrline = open(version_file, "rt").read()
@@ -60,6 +63,16 @@ class CustomDevelop(develop):
             config.write()
         develop.run(self)
 
+class CoverageTest(TestCommand):
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import nose
+        nose.run_exit(argv=['nosetests'])
+
 setup(
         name="mond_project",
         version=this_version,
@@ -68,5 +81,7 @@ setup(
         packages=find_packages(exclude=["tests", "docs"]),
         setup_requires=["configobj"],
         install_requires=required,
+        tests_require=test_requires,
         python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
-        cmdclass={"install":CustomInstall, "develop":CustomDevelop})
+        cmdclass={"install":CustomInstall, "develop":CustomDevelop,
+            "test":CoverageTest})
