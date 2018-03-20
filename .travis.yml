@@ -7,7 +7,9 @@ python:
 os:
   - linux
   - osx
-# command to install dependencies
+before_install:
+  - pip install configobj
+# command to install code
 install:
   - python setup.py install --api-key=$ILL_KEY
 # command to run tests
