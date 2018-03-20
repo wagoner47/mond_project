@@ -9,7 +9,7 @@ os:
   - osx
 # command to install dependencies
 install:
-  - pip install -r requirements.txt --install-option="--api-key=$ILL_KEY"
+  - python setup.py install --api-key=$ILL_KEY
 # command to run tests
 script:
   - coverage run -m mond_project.data_utils.data_read_utils
