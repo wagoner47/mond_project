@@ -14,6 +14,6 @@ install:
   - python setup.py install --api-key=$ILL_KEY
 # command to run tests
 script:
-  - coverage run -m mond_project.data_utils.data_read_utils
+  - python setup.py test
 after_success:
   - coveralls
