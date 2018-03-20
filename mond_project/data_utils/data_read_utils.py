@@ -2,9 +2,15 @@ from __future__ import (absolute_import, division, print_function,
         unicode_literals)
 import requests
 import os
+from configobj import ConfigObj
 
 
-def get(path, api_key, params=None):
+config = ConfigObj(os.path.join(os.path.dirname(__file__), "..",
+    "mond_config.ini"))
+api_key = config["ILL_KEY"]
+
+
+def get(path, params=None):
     """Make an HTTP request to get the data from path. Note that there are
     several possible returns with different types depending on the data received
     from the URL
@@ -13,8 +19,6 @@ def get(path, api_key, params=None):
     ----------
     :param path: The URL to request from
     :type path: str
-    :param api_key: The key for accessing the Illustris API
-    :type api_key: str
     :param params: Extra parameters to pass to `requests`. Default None
     :type params: dict or None
 
@@ -35,9 +39,8 @@ def get(path, api_key, params=None):
 
     >>> from mond_project import get
     >>> import os
-    >>> api_key = os.getenv("ILL_KEY")
     >>> base_url = "http://www.illustris-project.org/api/"
-    >>> r = get(base_url, api_key)
+    >>> r = get(base_url)
     >>> r.keys()
     ['simulations']
     >>> len(r["simulations"])
@@ -50,7 +53,7 @@ def get(path, api_key, params=None):
     Getting the data saved in a file with a specific URL:
 
     >>> table_url = "http://www.illustris-project.org/api/Illustris-3/snapshots/135/subhalos/1030/sublink/mpb.hdf5"
-    >>> filename = get(table_url, api_key)
+    >>> filename = get(table_url)
     >>> print(filename)
     'sublink_mpb_1030.hdf5'
     """
