@@ -5,7 +5,6 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 from setuptools.command.develop import develop
 import os
-from configobj import ConfigObj
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -26,6 +25,7 @@ else:
 class CustomInstall(install):
     user_options = install.user_options + [("api-key=", None, "The Illustris "\
             "API key, which will be set as the needed environment variable")]
+    from configobj import ConfigObj
 
     def initialize_options(self):
         self.api_key = None
@@ -45,6 +45,7 @@ class CustomInstall(install):
 class CustomDevelop(develop):
     user_options = develop.user_options + [("api-key=", None, "The Illustris "\
             "API key, which will be set as the needed environment variable")]
+    from configobj import ConfigObj
 
     def initialize_options(self):
         develop.initialize_options(self)
