@@ -1,9 +1,11 @@
 [run]
 branch = True
-include = 
-	mond_project/mond_test/*
-	mond_project/data_utils/*
+source = mond_project
+include = mond_project/*
 omit = 
+	setup.py
+	.eggs/*
+	.git/*
 	*/__init__.py
 	*/_version.py
 	mond_project/tests/*
