@@ -14,6 +14,6 @@ install:
   - python setup.py install --api-key=$ILL_KEY
 # command to run tests
 script:
-  - pytest --cov --doctest-modulet
+  - pytest --cov --doctest-module
 after_success:
   - coveralls
