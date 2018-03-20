@@ -9,3 +9,4 @@ requests
 setuptools
 h5py==2.7.0
 configobj
+future
