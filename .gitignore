@@ -102,3 +102,6 @@ ENV/
 
 # config file
 */mond_config.ini
+
+# test data
+*/sublink_mpb_1030.hdf5
