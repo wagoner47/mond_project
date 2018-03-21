@@ -92,6 +92,6 @@ setup(
         install_requires=required,
         tests_require=test_requires,
         test_suite="nose2.collector.collector",
-        python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
+        python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, != 3.4.*",
         cmdclass={"install":CustomInstall, "develop":CustomDevelop,
             "pytest":PyTest})
