@@ -9,6 +9,7 @@ os:
 before_install:
   - pip install configobj
   - pip install pytest-cov
+  - yum install hdf5-devel
 # command to install code
 install:
   - python setup.py install --api-key=$ILL_KEY
