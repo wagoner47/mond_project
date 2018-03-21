@@ -17,4 +17,4 @@ Now change to the root :repo:`mond_project` directory::
 Finally, use the :file:`setup.py` script::
         
         python setup.py install
-Standard command line options are available, such as :code:`--prefix=`
+Standard command line options are available, such as :code:`--prefix=`. However, an additional option should also be given, :code:`--api-key=`, followed by the Illustris API key to use (you must first register with Illustris for this). This will create/modify a configuration file which is used by the code with the API key stored. This ensures that the user does not need to continually input the API key or have an environment variable which may be different on different operating systems.

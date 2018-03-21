@@ -1,14 +1,18 @@
 language: python
 python:
   - "2.7"
-  - "3.4"
   - "3.5"
   - "3.6"
-# command to install dependencies
+os:
+  - linux
+before_install:
+  - pip install configobj
+  - pip install pytest-cov
+# command to install code
 install:
-  - pip install -r requirements.txt
+  - python setup.py install --api-key=$ILL_KEY
 # command to run tests
 script:
-  - coverage run -m mond_project.data_utils.data_read_utils
+  - python setup.py pytest
 after_success:
   - coveralls

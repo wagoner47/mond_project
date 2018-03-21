@@ -15,6 +15,7 @@ Welcome to mond_project's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   readme_include
    install
 
 

@@ -1,9 +1,14 @@
 [run]
 branch = True
-include = mond_test/*
+source = mond_project
+include = mond_project/*
 omit = 
+	setup.py
+	.eggs/*
+	.git/*
 	*/__init__.py
 	*/_version.py
+	mond_project/tests/*
 
 [report]
 show_missing = True
