@@ -9,8 +9,12 @@ os:
 before_install:
   - pip install configobj
   - pip install pytest-cov
-  - sudo apt-get -qq update
-  - sudo apt-get hdf5-devel
+  - wget http://www.hdfgroup.org/ftp/HDF5/current/bin/linux-x86_64/hdf5-1.8.13-linux-x86_64-shared.tar.gz
+  - mkdir hdf5
+  - cd hdf5
+  - sudo tar xzvf ../hdf5-1.8.13-linux-x86_64-shared.tar.gz
+  - cd bin
+  - echo "yes" | ./h5redeploy
 # command to install code
 install:
   - python setup.py install --api-key=$ILL_KEY
