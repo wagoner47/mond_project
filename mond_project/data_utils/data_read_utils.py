@@ -42,11 +42,13 @@ def get(path, params=None):
     >>> base_url = "http://www.illustris-project.org/api/"
     >>> r = get(base_url)
     >>> list(r)
-    [u'simulations']
+    ['simulations']
     >>> len(r["simulations"])
     18
-    >>> r["simulations"][0]
-    {'name': 'Illustris-1', 'num_snapshots': 134, 'url': 'http://www.illustris-project.org/api/Illustris-1/'}
+    >>> r["simulations"][0] == {'name': 'Illustris-1', 
+    ...                         'num_snapshots': 134, 
+    ...                         'url': 'http://www.illustris-project.org/api/Illustris-1/'}
+    True
 
     Getting the data saved in a file with a specific URL:
 
