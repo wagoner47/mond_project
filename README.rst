@@ -15,4 +15,6 @@ mond_project
 ************
 A working repository for our final project on MOND vs LCDM
 
-.. literalinclude:: ./docs/install.rst
+.. include:: ./docs/install.rst
+    :start-line: 0
+    :end-line: -1
