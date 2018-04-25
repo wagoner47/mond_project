@@ -34,7 +34,7 @@ Reference/API
 .. toctree::
    :maxdepth: 2
    
-   mond_test
+   calculate
    data_utils
 
 
