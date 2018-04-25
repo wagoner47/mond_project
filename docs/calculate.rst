@@ -14,3 +14,4 @@ The calculation part of this code gives functions that can be used when testing 
    :maxdepth: 2
 
    calculate.calc_accel
+
