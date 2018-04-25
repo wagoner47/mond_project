@@ -1,3 +1,7 @@
+.. _install:
+
+.. role:: repo(file)
+
 ============
 Installation
 ============
