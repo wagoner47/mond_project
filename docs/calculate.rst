@@ -1,8 +1,8 @@
 .. _calculate:
 
-************
-Calculations
-************
+*********
+Calculate
+*********
 
 .. currentmodule:: mond_project
 
