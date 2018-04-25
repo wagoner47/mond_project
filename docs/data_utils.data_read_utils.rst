@@ -20,7 +20,7 @@ A slightly higher level function for accessing the Illustris data can also be us
 | v           | km/s            | Speed relative to galaxy, |
 |             |                 | in physical units         |
 +-------------+-----------------+---------------------------+
-| type        |        -        | Type of particle, either  |
+| type        |      n/a        | Type of particle, either  |
 |             |                 | "gas" or "star"           |
 +-------------+-----------------+---------------------------+
 
