@@ -115,10 +115,10 @@ def save_halos(simulation, save_loc, z=None, snapnum=None):
     output file names
     :rtype list_file: str
     
-    :TODO: Decide on definition of subhalo as a 'galaxy'. Is :math:`M > 10^5
-    M_\odot` good enough?
+    :TODO: Decide on definition of subhalo as a 'galaxy'. Is :math:`M_{gas} >
+    0` and :math:`M_{stars} > 0` good enough?
     """
-    mass_cut = hubble_param * 10**-5
+    mass_cut = 0.0
     query_params = {
         "stars":"Coordinates,Masses,Velocities",
         "gas"  :"Coordinates,Masses,Velocities"}
@@ -141,7 +141,7 @@ def save_halos(simulation, save_loc, z=None, snapnum=None):
             raise ValueError(
                   "Invalid snapshot number for simulation {}: {}. Please use a "
                   "valid snapshot number for this simulation".format(simulation,
-                        snapnum))
+                                                                     snapnum))
         snap_url = sim_snaps[sim_snapnums.index(snapnum)]["url"]
     else:
         snap_url = sim["snapshots"] + "z={}/".format(float(z))
@@ -158,7 +158,7 @@ def save_halos(simulation, save_loc, z=None, snapnum=None):
     a = 1.0 / (1.0 + z)
     for i in range(snap["count"]):
         sub = get(sub_url.format(i))
-        if sub["mass"] > mass_cut:
+        if sub["mass_stars"] > mass_cut and sub["mas_gas"] > mass_cut:
             saved_filename = get(sub["cutouts"]["subhalo"], query_params)
             with h5py.File(saved_filename, "r") as f:
                 # Get gas data
@@ -193,11 +193,10 @@ def save_halos(simulation, save_loc, z=None, snapnum=None):
                 
                 # Put in DataFrame
                 df = pd.DataFrame.from_dict({
-                                                "r":np.append(r_gas, r_stars),
-                                                "M":np.append(m_gas, m_stars),
-                                                "v":np.append(v_gas, v_stars),
-                                                "type":np.append(type_gas,
-                                                                 type_stars)})
+                    "r"   :np.append(r_gas, r_stars),
+                    "M"   :np.append(m_gas, m_stars),
+                    "v"   :np.append(v_gas, v_stars),
+                    "type":np.append(type_gas, type_stars)})
                 df.to_pickle(os.path.join(save_loc, fname_base.format(i)))
                 file_list.append(fname_base.format(i))
             os.remove(saved_filename)
