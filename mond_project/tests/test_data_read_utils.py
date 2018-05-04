@@ -7,6 +7,7 @@ import re
 import requests
 import h5py
 from mond_project.data_utils import data_read_utils
+import create_test_data
 
 test_base_url = "http://www.illustris-project.org/api/"
 test_hdf5_url = "http://www.illustris-project.org/api/Illustris-3/snapshots"\
@@ -116,6 +117,13 @@ def test_save_halos_bad_sim():
 def test_save_halos():
     """Test pass case of :function:`data_utils.data_read_utils.save_halos`
     """
+    test_exp_files = [os.path.join(test_dir, "test_data", "exp", filei) for
+            filei in ["subhalo_list_z.npz", "subhalo_list_snapnum.npz",
+            "Illustris-1_z=0_subhalo0.pickle.gz",
+            "Illustris-1_snapnum=135_subhalo0.pickle.gz"]]
+    if not np.all([os.path.isfile(filei) for filei in test_exp_files]):
+        create_test_data.main()
+
     # Test query by redshift
     list_file = data_read_utils.save_halos(1,
                                            os.path.join(test_dir, "test_data",

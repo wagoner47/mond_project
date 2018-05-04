@@ -87,7 +87,8 @@ def save_halos(simulation, save_loc, z=None, snapnum=None):
     file containing the radii, masses, and velocities of gas and stars
     associated with the subhalo. The files are stored at :param:`save_loc`,
     as well as a file containing a list of the subhalo file names. The file
-    path for the list file will be returned for future use.
+    path for the list file will be returned for future use. Only the first 100
+    halos identified as galaxies will be saved.
     
     Parameters
     ----------
@@ -157,6 +158,8 @@ def save_halos(simulation, save_loc, z=None, snapnum=None):
     z = snap["redshift"]
     a = 1.0 / (1.0 + z)
     for i in range(snap["count"]):
+        if len(file_list) >= 100:
+            break
         sub = get(sub_url.format(i))
         if sub["mass_stars"] > mass_cut and sub["mas_gas"] > mass_cut:
             saved_filename = get(sub["cutouts"]["subhalo"], query_params)
