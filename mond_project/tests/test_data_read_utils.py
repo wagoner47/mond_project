@@ -6,8 +6,9 @@ import os
 import re
 import requests
 import h5py
+import pandas as pd
 from mond_project.data_utils import data_read_utils
-import create_test_data
+from . import create_test_data
 
 test_base_url = "http://www.illustris-project.org/api/"
 test_hdf5_url = "http://www.illustris-project.org/api/Illustris-3/snapshots"\
@@ -66,7 +67,8 @@ def test_get_table():
     """
     # Get data
     fname = data_read_utils.get(test_hdf5_url)
-    np.testing.assert_string_equal(fname, os.path.join(os.getcwd(), "mpb.hdf5"))
+    np.testing.assert_string_equal(fname, os.path.join(os.getcwd(), 
+        "sublink_mpb_1030.hdf5"))
     ## Read in HDF5 data: just get the one field and close again
     f = h5py.File(fname, "r")
     snapnum_get = f["SnapNum"][:]
@@ -124,13 +126,16 @@ def test_save_halos():
     if not np.all([os.path.isfile(filei) for filei in test_exp_files]):
         create_test_data.main()
 
+    if not os.path.isdir(os.path.join(test_dir, "test_data", "obs")):
+        os.makedirs(os.path.join(test_dir, "test_data", "obs"))
     # Test query by redshift
     list_file = data_read_utils.save_halos(1,
                                            os.path.join(test_dir, "test_data",
                                                         "obs"), z=0)
     file_list_z_exp = np.load(
-        os.path.join(test_dir, "test_data", "exp", "subhalo_list_z.npz"))
-    file_list_z_obs = np.load(list_file)
+        os.path.join(test_dir, "test_data", "exp",
+        "subhalo_list_z.npz"))["arr_0"]
+    file_list_z_obs = np.load(list_file)["arr_0"]
     # Compare saved file names
     np.testing.assert_array_equal(file_list_z_obs, file_list_z_exp,
                                   "Saved file name list different than "
@@ -148,10 +153,11 @@ def test_save_halos():
     # Test query by snapshot number
     list_file = data_read_utils.save_halos(1,
                                            os.path.join(test_dir, "test_data",
-                                                        "obs"), z=135)
+                                                        "obs"), snapnum=135)
     file_list_sn_exp = np.load(
-        os.path.join(test_dir, "test_data", "exp", "subhalo_list_sn.npz"))
-    file_list_sn_obs = np.load(list_file)
+        os.path.join(test_dir, "test_data", "exp",
+        "subhalo_list_snapnum.npz"))["arr_0"]
+    file_list_sn_obs = np.load(list_file)["arr_0"]
     # Compare saved file names
     np.testing.assert_array_equal(file_list_sn_obs, file_list_sn_exp,
                                   "Saved file name list different than "

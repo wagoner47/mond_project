@@ -76,7 +76,7 @@ def get(path, params=None):
         filename = r.headers["content-disposition"].split("filename=")[1]
         with open(filename, "wb") as f:
             f.write(r.content)
-        return filename
+        return os.path.abspath(filename)
     
     return r
 
@@ -157,41 +157,49 @@ def save_halos(simulation, save_loc, z=None, snapnum=None):
                                                          else snapnum)
     z = snap["redshift"]
     a = 1.0 / (1.0 + z)
-    for i in range(snap["count"]):
+    for i in range(snap["num_groups_subfind"]):
         if len(file_list) >= 100:
             break
         sub = get(sub_url.format(i))
-        if sub["mass_stars"] > mass_cut and sub["mas_gas"] > mass_cut:
+        if sub["mass_stars"] > mass_cut and sub["mass_gas"] > mass_cut:
             saved_filename = get(sub["cutouts"]["subhalo"], query_params)
             with h5py.File(saved_filename, "r") as f:
                 # Get gas data
-                dx = f["PartType0"]["Coordinates"][:, 0] - sub["pos_x"]
-                dy = f["PartType0"]["Coordinates"][:, 1] - sub["pos_y"]
-                dz = f["PartType0"]["Coordinates"][:, 2] - sub["pos_z"]
+                dx = np.asarray(f["PartType0"]["Coordinates"][:, 0] -
+                        sub["pos_x"], dtype=float)
+                dy = np.asarray(f["PartType0"]["Coordinates"][:, 1] -
+                        sub["pos_y"], dtype=float)
+                dz = np.asarray(f["PartType0"]["Coordinates"][:, 2] -
+                        sub["pos_z"], dtype=float)
                 r_gas = np.sqrt(dx**2 + dy**2 + dz**2) * a / hubble_param
-                vx = f["PartType0"]["Velocities"][:, 0] * np.sqrt(a) - sub[
-                    "vel_x"]
-                vy = f["PartType0"]["Velocities"][:, 1] * np.sqrt(a) - sub[
-                    "vel_y"]
-                vz = f["PartType0"]["Velocities"][:, 2] * np.sqrt(a) - sub[
-                    "vel_z"]
+                vx = np.asarray(f["PartType0"]["Velocities"][:, 0] * np.sqrt(a) 
+                        - sub["vel_x"], dtype=float)
+                vy = np.asarray(f["PartType0"]["Velocities"][:, 1] * np.sqrt(a) 
+                        - sub["vel_y"], dtype=float)
+                vz = np.asarray(f["PartType0"]["Velocities"][:, 2] * np.sqrt(a) 
+                        - sub["vel_z"], dtype=float)
                 v_gas = np.sqrt(vx**2 + vy**2 + vz**2)
-                m_gas = f["PartType0"]["Masses"] * 10**10 / hubble_param
+                m_gas = np.asarray(f["PartType0"]["Masses"], dtype=float) 
+                m_gas *= (10**10 / hubble_param)
                 type_gas = np.full(m_gas.size, "gas")
                 
                 # Get star data
-                dx = f["PartType4"]["Coordinates"][:, 0] - sub["pos_x"]
-                dy = f["PartType4"]["Coordinates"][:, 1] - sub["pos_y"]
-                dz = f["PartType4"]["Coordinates"][:, 2] - sub["pos_z"]
+                dx = np.asarray(f["PartType4"]["Coordinates"][:, 0] -
+                        sub["pos_x"], dtype=float)
+                dy = np.asarray(f["PartType4"]["Coordinates"][:, 1] -
+                        sub["pos_y"], dtype=float)
+                dz = np.asarray(f["PartType4"]["Coordinates"][:, 2] -
+                        sub["pos_z"], dtype=float)
                 r_stars = np.sqrt(dx**2 + dy**2 + dz**2) * a / hubble_param
-                vx = f["PartType4"]["Velocities"][:, 0] * np.sqrt(a) - sub[
-                    "vel_x"]
-                vy = f["PartType4"]["Velocities"][:, 1] * np.sqrt(a) - sub[
-                    "vel_y"]
-                vz = f["PartType4"]["Velocities"][:, 2] * np.sqrt(a) - sub[
-                    "vel_z"]
+                vx = np.asarray(f["PartType4"]["Velocities"][:, 0] * np.sqrt(a)
+                        - sub["vel_x"], dtype=float)
+                vy = np.asarray(f["PartType4"]["Velocities"][:, 1] * np.sqrt(a)
+                        - sub["vel_y"], dtype=float)
+                vz = np.asarray(f["PartType4"]["Velocities"][:, 2] * np.sqrt(a)
+                        - sub["vel_z"], dtype=float)
                 v_stars = np.sqrt(vx**2 + vy**2 + vz**2)
-                m_stars = f["PartType4"]["Masses"] * 10**10 / hubble_param
+                m_stars = np.asarray(f["PartType4"]["Masses"], dtype=float) 
+                m_stars *= (10**10 / hubble_param)
                 type_stars = np.full(m_stars.size, "star")
                 
                 # Put in DataFrame

@@ -91,7 +91,7 @@ def calc_gobs(r, delta_r, list_file_loc, subhalo_id=None):
     r_upp = r.copy() + 0.5 * delta_r
     
     snap_dir = os.path.dirname(list_file_loc)
-    file_list = np.load(list_file_loc)
+    file_list = np.load(list_file_loc)["arr_0"]
     saved_ids = _get_subhalo_ids(file_list)
     if subhalo_id is not None:
         subhalo_id = np.atleast_1d(subhalo_id)
@@ -154,7 +154,7 @@ def calc_gbar(r, delta_r, list_file_loc, subhalo_id=None):
     r_upp = r.copy() + 0.5 * delta_r
     
     snap_dir = os.path.dirname(list_file_loc)
-    file_list = np.load(list_file_loc)
+    file_list = np.load(list_file_loc)["arr_0"]
     saved_ids = _get_subhalo_ids(file_list)
     if subhalo_id is not None:
         subhalo_id = np.atleast_1d(subhalo_id)
