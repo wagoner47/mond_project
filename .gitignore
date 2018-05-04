@@ -107,3 +107,6 @@ ENV/
 # test data
 *sublink_mpb_1030.hdf5
 *.hdf5
+*.npz
+*.pickle*
+*/test_data/*
