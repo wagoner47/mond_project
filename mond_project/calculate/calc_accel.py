@@ -12,12 +12,12 @@ grav_constant = 4.301e-6
 def _get_subhalo_ids(file_list):
     """A private function to be used behind the scenes for getting a list of
     the stored subhalo IDs given the list of file names
-    
+
     Parameters
     ----------
     :param file_list: List of file names
     :type file_list: 1D array-like str
-    
+
     Returns
     -------
     :return ids: Subhalo IDs found in the file names
@@ -32,12 +32,12 @@ def _get_subhalo_ids(file_list):
 def _get_subhalo_fbase(file_list):
     """A private function to be used behind the scenes for getting the file
     name base of the stored subhalo files given the list of file names
-    
+
     Parameters
     ----------
     :param file_list: List of file names
     :type file_list: 1D array-like str
-    
+
     Returns
     -------
     :return base: Base of the file names contained within :param:`file_list`
@@ -52,7 +52,7 @@ def _get_subhalo_fbase(file_list):
 def calc_gobs(r, delta_r, list_file_loc, subhalo_id=None):
     """Calculate the observed gravitational acceleration, :math:`g_{obs}(r) =
     \frac{V_{obs}^2(r)}{r}`
-    
+
     Parameters
     ----------
     :param r: Radius/radii at which to calculate the acceleration
@@ -70,7 +70,7 @@ def calc_gobs(r, delta_r, list_file_loc, subhalo_id=None):
     :param subhalo_id: ID(s) of subhalos within snapshot for which to
     calculate, or None to calculate for all subhalos. Default None
     :type subhalo_id: scalar or 1D array-like int, optional
-    
+
     Returns
     -------
     :return gobs: The observed gravitational acceleration for each halo
@@ -89,7 +89,7 @@ def calc_gobs(r, delta_r, list_file_loc, subhalo_id=None):
                 "Non-constant bin sizes must have same length as bin centers")
     r_low = r.copy() - 0.5 * delta_r
     r_upp = r.copy() + 0.5 * delta_r
-    
+
     snap_dir = os.path.dirname(list_file_loc)
     file_list = np.load(list_file_loc)["arr_0"]
     saved_ids = _get_subhalo_ids(file_list)
@@ -115,7 +115,7 @@ def calc_gobs(r, delta_r, list_file_loc, subhalo_id=None):
 def calc_gbar(r, delta_r, list_file_loc, subhalo_id=None):
     """Calculate the baryonic gravitational acceleration, :math:`g_{bar}(r) =
     \frac{G M(<r)}{r^2}`
-    
+
     Parameters
     ----------
     :param r: Radius/radii at which to calculate the acceleration
@@ -133,7 +133,7 @@ def calc_gbar(r, delta_r, list_file_loc, subhalo_id=None):
     :param subhalo_id: ID(s) of subhalos within snapshot for which to
     calculate, or None to calculate for all subhalos. Default None
     :type subhalo_id: scalar or 1D array-like int, optional
-    
+
     Returns
     -------
     :return gbar: The baryonic gravitational acceleration for each halo
@@ -152,7 +152,7 @@ def calc_gbar(r, delta_r, list_file_loc, subhalo_id=None):
                 "Non-constant bin sizes must have same length as bin centers")
     r_low = r.copy() - 0.5 * delta_r
     r_upp = r.copy() + 0.5 * delta_r
-    
+
     snap_dir = os.path.dirname(list_file_loc)
     file_list = np.load(list_file_loc)["arr_0"]
     saved_ids = _get_subhalo_ids(file_list)
@@ -171,7 +171,7 @@ def calc_gbar(r, delta_r, list_file_loc, subhalo_id=None):
         shdf = pd.read_pickle(os.path.join(snap_dir, filei))
         for ri, rli, rui in zip(r, r_low, r_upp):
             shdf_in = shdf.query("r < {}".format(rli))
-            m_in = shdf_in["mass"].sum()
+            m_in = shdf_in["M"].sum()
             shdfi = shdf.query("(r >= {}) & (r < {})".format(rli, rui))
             gbar[id].loc[ri] = (grav_constant * m_in / shdfi["r"]).mean()
     return gbar
