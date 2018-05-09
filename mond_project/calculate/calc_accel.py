@@ -6,7 +6,7 @@ import pandas as pd
 
 
 # Gravitational constant in units of km^2 kpc / M_sun s^2
-grav_constant = 4.301e-6
+grav_constant = 4.301*10**-6
 
 
 def _get_subhalo_ids(file_list):
@@ -108,7 +108,8 @@ def calc_gobs(r, delta_r, list_file_loc, subhalo_id=None):
         shdf = pd.read_pickle(os.path.join(snap_dir, filei))
         for ri, rli, rui in zip(r, r_low, r_upp):
             shdfi = shdf.query("(r >= {}) & (r < {})".format(rli, rui))
-            gobs[id].loc[ri] = shdfi["v"].pow(2).div(shdfi["r"]).mean()
+            gobs[id].loc[ri] = ((shdfi["v"]**2)/(shdfi["r"])).mean()
+        print('Finished Halo ' + str(id), end = '\r')
     return gobs
 
 
@@ -173,5 +174,6 @@ def calc_gbar(r, delta_r, list_file_loc, subhalo_id=None):
             shdf_in = shdf.query("r < {}".format(rli))
             m_in = shdf_in["M"].sum()
             shdfi = shdf.query("(r >= {}) & (r < {})".format(rli, rui))
-            gbar[id].loc[ri] = (grav_constant * m_in / shdfi["r"]).mean()
+            gbar[id].loc[ri] = (grav_constant * m_in / shdfi["r"].pow(2)).mean()
+        print('Finished Halo ' + str(id), end = '\r')
     return gbar
